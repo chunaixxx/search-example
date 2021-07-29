@@ -13,18 +13,23 @@
 
 		<div class="search__border"></div>
 
-		<img
-			@mousedown="clearInput"
-			class="search__icon search__icon-cancel"
-			src="../assets/cancel-icon.svg"
-			alt=""
-		/>
-		<img
-			@click="focus"
-			class="search__icon search__icon-search"
-			src="../assets/search-icon.svg"
-			alt=""
-		/>
+		<button class="search__button search__cancel-btn" @mousedown="clearInput">
+			<img
+				class="search__icon search__icon-cancel"
+				src="../assets/cancel-icon.svg"
+				alt=""
+			/>
+		</button>
+		
+		<button class="search__button search__search-btn" @click="focus">
+			<img
+				class="search__icon search__icon-search"
+				src="../assets/search-icon.svg"
+				alt=""
+			/>
+		</button>
+
+
 	</div>
 </template>
 
@@ -62,7 +67,7 @@ export default {
 	box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 
 	&__input {
-		padding: 12px 20px;
+		padding: 12px 50px 12px 20px;
 		width: 100%;
 
 		color: #333;
@@ -73,16 +78,20 @@ export default {
 		border: none;
 		outline: none;
 
+		&::placeholder {
+			color: #666;
+		}
+
 		&:focus + .search__border {
 			transform: rotateX(0deg);
 			background-color: #4169e1;
 		}
 
-		&:focus ~ .search__icon-cancel {
+		&:focus ~ .search__cancel-btn {
 			transform: scale(1);
 		}
 
-		&:focus ~ .search__icon-search {
+		&:focus ~ .search__search-btn {
 			transform: scale(0);
 		}
 	}
@@ -99,19 +108,30 @@ export default {
 		height: 2px;
 	}
 
-	&__icon {
+	&__button {
 		position: absolute;
 		height: 100%;
+		width: 50px;
+		cursor: pointer;
 		right: 0;
 		top: 0;
-		padding: 15px;
-		cursor: pointer;
+
+		border: none;
+		background-color: transparent;
+
+		display: flex;
+		align-items: center;
+		justify-content: center;
 
 		transition: transform 0.25s ease;
 	}
 
-	&__icon-cancel {
+	&__cancel-btn {
 		transform: scale(0);
+	}
+
+	&__icon {
+		height: 50%;
 	}
 }
 </style>
