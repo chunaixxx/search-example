@@ -1,5 +1,8 @@
 # search-example
 
+## Demo
+[click](https://chunaixxx.github.io/search-example/)
+
 ## Project setup
 ```
 npm install
