@@ -23,18 +23,63 @@
 
 		<search-input class="search" v-model="search" />
 	</header>
+
+	<main class="cards">
+		<user-card 
+			v-for="user in users"
+			class="card"
+			:user="user"
+			:key="user.id"
+		/>
+	</main>
 </template>
 
 <script>
 import SearchInput from '@/components/SearchInput'
+import UserCard from '@/components/UserCard'
 
 export default {
 	components: {
-		SearchInput
+		SearchInput,
+		UserCard
 	},
 
 	data: () => ({
-		search: ''
+		search: '',
+
+		users: [
+			{
+				id: 0,
+				name: {
+					first: 'Daniil',
+					last: 'Kirillov',
+				},
+
+				username: 'chunaixxx',
+				pictureUrl: 'https://randomuser.me/api/portraits/men/64.jpg',
+
+				contacts: {
+					phone: '8(999)-851-55-66',
+					email: 'chunaixxx@gmail.com'
+				}
+			},
+
+			{
+				id: 1,
+				name: {
+					first: 'Ivan',
+					last: 'Ivanov',
+				},
+
+				username: 'ivanIvanov',
+				pictureUrl: 'https://randomuser.me/api/portraits/men/63.jpg',
+
+				contacts: {
+					phone: '8(999)-999-99-99',
+					email: 'ivanIvanov@gmail.com'
+				}
+			}
+		]
 	})
 }
 </script>
@@ -95,5 +140,17 @@ body {
 	&__icon {
 		width: 25px;
 	}
+}
+
+.cards {
+	padding: 50px;
+
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	gap: 40px;
+}
+
+.card {
+	height: 130px;
 }
 </style>
