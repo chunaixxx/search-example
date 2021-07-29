@@ -106,7 +106,7 @@ body {
 .header {
 	background-color: #4169e1;
 	color: #fff;
-	height: 150px;
+	height: 100px;
 	padding: 20px 50px 0 50px;
 
 	display: flex;
@@ -130,7 +130,7 @@ body {
 	align-self: center;
 	width: 80%;
 	transform: translateY(50%);
-	font-size: 1.6em;
+	font-size: 1.3em;
 }
 
 .social-links {
