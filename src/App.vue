@@ -4,14 +4,23 @@
 			<a href="#" class="logo">chunai</a>
 
 			<div class="social-links">
-				<a class="social-links__link" href="https://t.me/chunaichunai" target="_blank">
+				<a
+					class="social-links__link"
+					href="https://t.me/chunaichunai"
+					target="_blank"
+				>
 					<img
 						class="social-links__icon"
 						src="./assets/telegram-icon.svg"
 						alt=""
-					/>	
+					/>
 				</a>
-				<a class="social-links__link" href="https://github.com/chunaixxx" target="_blank">
+
+				<a
+					class="social-links__link"
+					href="https://github.com/chunaixxx"
+					target="_blank"
+				>
 					<img
 						class="social-links__icon"
 						src="./assets/github-icon.svg"
@@ -21,16 +30,25 @@
 			</div>
 		</div>
 
-		<search-input class="search" v-model="search" />
+		<search-input class="search" v-model.trim="search" />
 	</header>
 
 	<main class="cards">
-		<user-card 
-			v-for="user in users"
-			class="card"
-			:user="user"
-			:key="user.id"
+		<img
+			v-if="isLoading"
+			class="preloader"
+			src="./assets/preloader.svg"
+			alt=""
 		/>
+
+		<transition-group v-else name="users">
+			<user-card
+				v-for="user in searchedUsers"
+				class="card"
+				:user="user"
+				:key="user.login.uuid"
+			/>
+		</transition-group>
 	</main>
 </template>
 
@@ -45,42 +63,33 @@ export default {
 	},
 
 	data: () => ({
+		isLoading: true,
 		search: '',
 
-		users: [
-			{
-				id: 0,
-				name: {
-					first: 'Daniil',
-					last: 'Kirillov',
-				},
+		users: []
+	}),
 
-				username: 'chunaixxx',
-				pictureUrl: 'https://randomuser.me/api/portraits/men/64.jpg',
+	computed: {
+		searchedUsers() {
+			return this.users.filter(user => {
+				const name = (user.name.first + ' ' + user.name.last).toLowerCase()
 
-				contacts: {
-					phone: '8(999)-851-55-66',
-					email: 'chunaixxx@gmail.com'
-				}
-			},
+				return name.includes(this.search.toLowerCase())
+			})
+		}
+	},
 
-			{
-				id: 1,
-				name: {
-					first: 'Ivan',
-					last: 'Ivanov',
-				},
-
-				username: 'ivanIvanov',
-				pictureUrl: 'https://randomuser.me/api/portraits/men/63.jpg',
-
-				contacts: {
-					phone: '8(999)-999-99-99',
-					email: 'ivanIvanov@gmail.com'
-				}
-			}
-		]
-	})
+	async mounted() {
+		try {
+			const response = await fetch('https://randomuser.me/api/?results=70&inc=name,picture,login,email,phone&nat=us&noinfo')
+			const data = await response.json()
+			this.users = data.results
+		} catch (e) {
+			console.log(e)
+		} finally {
+			this.isLoading = false
+		}
+	}
 }
 </script>
 
@@ -150,7 +159,24 @@ body {
 	gap: 40px;
 }
 
+.preloader {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
 .card {
 	height: 130px;
+}
+
+.users-enter-active,
+.users-leave-active {
+	transition: all 1s ease;
+}
+.users-enter-from,
+.users-leave-to {
+	opacity: 0;
+	transform: translateY(0px);
 }
 </style>

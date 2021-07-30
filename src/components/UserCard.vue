@@ -1,21 +1,24 @@
 <template>
 	<div class="card">
-		<img class="card__picture" :src="user.pictureUrl" alt="">
+		<img class="card__picture" :src="user.picture.large" alt="">
 
 		<div class="card__inner">
 			<div class="card__info">
 				<h3 class="card__name">{{ user.name.first }} {{ user.name.last }}</h3>
-				<h4 class="card__username">@{{ user.username }}</h4>
+				<h4 class="card__username">@{{ user.login.username }}</h4>
 			</div>
 
 			<div class="card__contacts">
-				<a href="#" class="card__link card__phone">
+				<a :href="'tel:' + user.phone" class="card__link card__phone">
 					<img class="card__icon" src="../assets/phone-icon.svg" alt="">
-					<span>{{ user.contacts.phone }}</span>
+					<span>{{ user.phone }}</span>
 				</a>
-				<a href="#" class="card__link card__email">
+				<a :href="'mailto:' + user.email" class="card__link card__email">
 					<img class="card__icon" src="../assets/email-icon.svg" alt="">
-					<span>{{ user.contacts.email }}</span>
+					
+					<span :title="user.email">
+						{{ user.email.length > 20 ? user.email.slice(0, 20) + '...' : user.email }}
+					</span>
 				</a>
 			</div>
 		</div>
@@ -32,13 +35,16 @@ export default {
 				last: String,
 			},
 
-			username: String,
-			picturUrl: String,
+			login: {
+				username: String,
+			},
 
-			contacts: {
-				phone: String,
-				email: String
-			}
+			picture: {
+				large: String,
+			},
+
+			phone: String,
+			email: String
 		}
 	}
 }
@@ -58,6 +64,7 @@ export default {
 
 	&__inner {
 		padding: 15px;
+		width: 100%;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
@@ -74,7 +81,7 @@ export default {
 	}
 
 	&__contacts {
-		font-size: .9em;
+		font-size: .8em;
 		display: flex;
 		flex-direction: column;
 		gap: 5px;
@@ -86,7 +93,7 @@ export default {
 	}
 
 	&__icon {
-		width: 15px;
+		width: 13px;
 		margin-right: 5px;
 	}
 }
